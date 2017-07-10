@@ -26,4 +26,20 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function getAll(){
+        return User::orderBy('name', 'asc')->get();
+    }
+
+    public function update($user, $data){
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+
+        if(!is_null($data['password']))
+            $user->password = bcrypt($data['password']);
+
+        //return $user->save();
+
+    }
+
 }
