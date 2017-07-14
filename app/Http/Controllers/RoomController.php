@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
+
+    private $room;
+
+    public function __construct(Room $room){
+        $this->middleware('auth');
+        $this->room = $room;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +22,9 @@ class RoomController extends Controller
      */
     public function index()
     {
-        //
+        return view('room.index', [
+            'rooms' => $this->room->getAll()
+        ]);
     }
 
     /**
@@ -24,7 +34,7 @@ class RoomController extends Controller
      */
     public function create()
     {
-        //
+        return view('room.create');
     }
 
     /**
@@ -35,18 +45,12 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $this->validate($request,[
+            'name' => 'required|string|max:255'
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Room  $room
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Room $room)
-    {
-        //
+        $this->room->create_room($request->all());
+        return redirect()->route('room.index');
     }
 
     /**
@@ -57,7 +61,9 @@ class RoomController extends Controller
      */
     public function edit(Room $room)
     {
-        //
+        return view('room.edit', [
+            'room' => $room
+        ]);
     }
 
     /**
@@ -69,7 +75,12 @@ class RoomController extends Controller
      */
     public function update(Request $request, Room $room)
     {
-        //
+        $this->validate($request,[
+            'name' => 'required|string|max:255'
+        ]);
+
+        $this->room->update_room($room, $request->all());
+        return redirect()->route('room.index');
     }
 
     /**
@@ -80,6 +91,7 @@ class RoomController extends Controller
      */
     public function destroy(Room $room)
     {
-        //
+        $this->room->destroy_room($room);
+        return redirect()->route('room.index');
     }
 }

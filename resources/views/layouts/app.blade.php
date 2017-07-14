@@ -40,6 +40,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         <li><a href='/user'>User</a></li>
+                        <li><a href='/room'>Rooms</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
