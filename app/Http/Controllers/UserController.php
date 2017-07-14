@@ -37,20 +37,37 @@ class UserController extends Controller
         ]);
     }
 
+    public function create(Request $request){
+        return view('user.create');
+    }
+
+    public function store(Request $request){
+        $this->validate($request,[
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $this->user->create_user($request->all());
+        return redirect()->route('user.index');
+    }
+
     public function update(User $user, Request $request){
 
         $this->validate($request,[
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'string|min:6|confirmed',
+            'password' => 'required|min:6|confirmed',
         ]);
 
-        dd($user);
-
-        //$this->user->update($user, $request->getAll());
+        $this->user->update_user($user, $request->all());
         
-        return redirect()->route('user');
+        return redirect()->route('user.index');
+    }
 
+    public function destroy(User $user){
+        $this->user->destroy_user($user);
+        return redirect()->route('user.index');
     }
     
 
