@@ -15,6 +15,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/jquery.datetimepicker.min.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -41,6 +42,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href='/user'>User</a></li>
                         <li><a href='/room'>Rooms</a></li>
+                        <li><a href='/reserve'>Reserve</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -83,5 +85,15 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/jquery.datetimepicker.full.min.js') }}"></script>
+
+    <script>
+        $(function(){
+            jQuery('.datetimepicker').datetimepicker({
+                mask:'39/19/9999 29:00'
+            });
+        })
+    </script>
+    
 </body>
 </html>
