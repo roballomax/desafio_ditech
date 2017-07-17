@@ -14,6 +14,28 @@ class Reserve extends Model
         return Reserve::orderBy('hour', 'desc')->where('user_id', \Illuminate\Support\Facades\Auth::user()->id)->get();
     }
 
+    public function validateReserve($data){
+
+        $verifyUser = Reserve::where([
+            ['user_id', '=', \Illuminate\Support\Facades\Auth::user()->id],
+            ['hour', '=', $data['hour']]
+        ])->get();
+
+        if(count($verifyUser) > 0)
+            return false;
+
+        $verifyRoom = Reserve::where([
+            ['room_id', '=', $data['room']],
+            ['hour', '=', $data['hour']]
+        ])->get();
+
+        if(count($verifyRoom) > 0)
+            return false;
+
+        return true;
+
+    }
+
     public function user(){
         return $this->belongsTo('App\User');
     }

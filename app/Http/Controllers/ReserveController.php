@@ -14,6 +14,7 @@ class ReserveController extends Controller
     private $room;
 
     public function __construct(Reserve $reserve, Room $room){
+        $this->middleware('auth');
         $this->reserve = $reserve;
         $this->room = $room;
     }
@@ -56,9 +57,16 @@ class ReserveController extends Controller
         ]);
 
         $request['hour'] = str_replace('/', '-', $request['hour']) . ":00";
+        $request['hour'] = date('Y-m-d H:00:00', strtotime($request['hour']));
 
-        $this->reserve->create_reserve($request->all());
-        return redirect()->route('reserve.index');
+        if($this->reserve->validateReserve($request->all())){
+            
+            $this->reserve->create_reserve($request->all());
+            return redirect()->route('reserve.index');
+        }
+
+        return redirect()->route('reserve.create');
+
     }
 
     /**
@@ -90,9 +98,15 @@ class ReserveController extends Controller
         ]);
 
         $request['hour'] = str_replace('/', '-', $request['hour']) . ":00";
+        $request['hour'] = date('Y-m-d H:00:00', strtotime($request['hour']));
 
-        $this->reserve->update_reserve($reserve, $request->all());
-        return redirect()->route('reserve.index');
+        if($this->reserve->validateReserve($request->all())) {
+            
+            $this->reserve->update_reserve($reserve, $request->all());
+            return redirect()->route('reserve.index');
+        }
+        
+        return redirect()->action('ReserveController@edit', [$reserve]);
     }
 
     /**
