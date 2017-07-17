@@ -65,6 +65,8 @@ class ReserveController extends Controller
             return redirect()->route('reserve.index');
         }
 
+        \Session::flash('status', 'Já existe uma reserva para este horário.');
+
         return redirect()->route('reserve.create');
 
     }
@@ -106,6 +108,8 @@ class ReserveController extends Controller
             return redirect()->route('reserve.index');
         }
         
+        \Session::flash('status', 'Já existe uma reserva para este horário.');
+
         return redirect()->action('ReserveController@edit', [$reserve]);
     }
 

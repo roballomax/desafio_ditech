@@ -76,6 +76,9 @@
                 </div>
             </div>
         </nav>
+        <div class='info' style='display: none'>
+            <p class="bg-info" style='padding: 10px'></p>
+        </div>
 
         @yield('content')
     </div>
@@ -88,10 +91,25 @@
     <script src="{{ asset('js/jquery.datetimepicker.full.min.js') }}"></script>
 
     <script>
+
+        var flash = "{{( Session::get('status') ?: '')}}";
+
         $(function(){
             jQuery('.datetimepicker').datetimepicker({
                 mask:'39/19/9999 29:00'
             });
+
+            if(flash.length > 0){
+                //$('.info').css('display', 'block');
+                $('.info').slideToggle();
+                $('.info p').text(flash);
+
+                setTimeout(function(){
+                    $('.info').slideToggle();
+                }, 3000);
+
+            }
+
         })
     </script>
     
